@@ -6,36 +6,11 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 22:36:08 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/14 02:36:00 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/15 00:24:10 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	ft_check_sep(char *s, char c, int boolean)
-{
-	int	i;
-
-	i = 0;
-	if (boolean == 0)
-	{
-		while (s[i])
-		{
-			if (s[i] == c)
-				return (i);
-			i++;
-		}
-		return (-1);
-	}
-	else if (boolean == 1)
-	{
-		while (s[i])
-			i++;
-		return (i);
-	}
-	return(0);
-}
-// fais check sep et str len 
 
 char	*ft_fill_from_lst(t_list *lst)
 {
@@ -46,7 +21,7 @@ char	*ft_fill_from_lst(t_list *lst)
 
 	length = ft_listiter(lst, &ft_check_sep);
 	tab = malloc((length + 1) * sizeof(char));
-	if(tab == NULL)
+	if (tab == NULL)
 		return (NULL);
 	i = 0;
 	j = 0;
@@ -79,8 +54,8 @@ char	*length_diff_zero(char *buf, char *kanye, int length, t_list **lst)
 	while (++j < i)
 		temp[j] = buf[j];
 	temp[j] = '\0';
-	ft_listadd_back(lst, ft_listnew(temp), 0);
-	free(temp);	
+	ft_listadd_back(lst, ft_listnew(temp, 0, 1), 0);
+	free(temp);
 	i = 0;
 	kanye = malloc((length - j + 1) * sizeof(char));
 	if (kanye == NULL)
@@ -89,7 +64,7 @@ char	*length_diff_zero(char *buf, char *kanye, int length, t_list **lst)
 		kanye[i++] = buf[j++];
 	kanye[i] = '\0';
 	if (kanye[0] == '\0')
-		return(free(kanye), NULL);
+		return (free(kanye), NULL);
 	return (kanye);
 }
 
@@ -107,7 +82,7 @@ char	*ret_line_in_static2(char *kanye, t_list **lst)
 	while (++j < i)
 		temp[j] = kanye[j];
 	temp[j] = '\0';
-	ft_listadd_back(lst, ft_listnew(temp), 0);
+	ft_listadd_back(lst, ft_listnew(temp, 0, 1), 0);
 	free(temp);
 	j = 0;
 	while (kanye[i])
@@ -118,16 +93,15 @@ char	*ret_line_in_static2(char *kanye, t_list **lst)
 	return (kanye);
 }
 
-char	*get_next_line(int fd)
+t_list	*get_next_line2(int fd)
 {
 	static char	*kanye = NULL;
 	char		*buffer;
 	t_list		*lst;
-	int			tab_fd_l[2];
-	char		*tab_fin;
+	int			tab_fd_l[3];
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (fd < 0|| BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0 || buffer == NULL)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0 || buffer == NULL)
 		return (free(buffer), NULL);
 	lst = NULL;
 	if (kanye != NULL && ft_check_sep(kanye, '\n', 0) >= 0)
@@ -141,13 +115,22 @@ char	*get_next_line(int fd)
 		buffer[tab_fd_l[1]] = '\0';
 		if (tab_fd_l[1] == 0 && lst == NULL)
 			return (free(buffer), NULL);
-		tab_fd_l[0] = fd; 
+		tab_fd_l[0] = fd;
 		if (tab_fd_l[1] != 0)
 			kanye = ft_normi(kanye, buffer, &lst, tab_fd_l);
 	}
-	tab_fin = ft_fill_from_lst(lst);
-	ft_listadd_back(&lst, NULL, 1);
-	return (free(buffer), tab_fin);
+	return (free(buffer), lst);
 }
 
-// tab int avec la length et fd
+char	*get_next_line(int fd)
+{
+	char	*tab_fin;
+	t_list	*lst;
+
+	lst = get_next_line2(fd);
+	if (lst == NULL)
+		return (NULL);
+	tab_fin = ft_fill_from_lst(lst);
+	ft_listadd_back(&lst, NULL, 1);
+	return (tab_fin);
+}
