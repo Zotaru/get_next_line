@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 22:48:26 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/13 17:23:17 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/14 01:20:23 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ typedef struct s_static
 
 t_list	*ft_listnew(char *content);
 t_list	*ft_listlast(t_list *lst);
-void	ft_listadd_back(t_list **lst, t_list *new);
-int		ft_strlen(char *str);
-int		ft_listiter(t_list *lst, int (*f)(char *));
-void	ft_listclear(t_list **lst);
+void	ft_listadd_back(t_list **lst, t_list *new, int i);
+//int		ft_strlen(char *str);
+int		ft_listiter(t_list *lst, int (*f)(char *, char, int));
+//void	ft_listclear(t_list **lst);
 char	*get_next_line(int fd);
 char	*ft_fill_from_lst(t_list *lst);
-int		ft_check_sep(char *s, char c);
+int		ft_check_sep(char *s, char c, int boolean);
 
 #endif

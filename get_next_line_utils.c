@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 23:27:55 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/10 22:46:00 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/14 01:22:21 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_list	*ft_listnew(char *content)
 	int		i;
 	int		l;
 
-	l = ft_strlen(content);
+	l = ft_check_sep(content, 0, 1);
 	i = 0;
 	new = malloc(sizeof(t_list));
 	new->content = malloc((l + 1) * sizeof(char));
@@ -41,19 +41,36 @@ t_list	*ft_listlast(t_list *lst)
 	return (lst);
 }
 
-void	ft_listadd_back(t_list **lst, t_list *new)
+void	ft_listadd_back(t_list **lst, t_list *new, int i)
 {
 	t_list	*temp;
 
-	if (lst && *lst)
+	if (i == 0)
 	{
-		temp = ft_listlast(*lst);
-		temp->next = new;
+		if (lst && *lst)
+		{
+			temp = ft_listlast(*lst);
+			temp->next = new;
+		}
+		else
+			*lst = new;
 	}
-	else
-		*lst = new;
+	else if (i == 1)
+	{
+		if (!lst || !*lst)
+			return ;
+		while (*lst)
+		{
+			free((*lst)->content);
+			temp = *lst;
+			*lst = (*lst)->next;
+			free(temp);
+		}
+	}
 }
 
+// add back peut clear la liste ou ajouter a la liste
+/*
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -62,9 +79,9 @@ int	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
-}
+}*/
 
-int	ft_listiter(t_list *lst, int (*f)(char *))
+int	ft_listiter(t_list *lst, int (*f)(char *, char, int))
 {
 	int	len;
 
@@ -73,12 +90,12 @@ int	ft_listiter(t_list *lst, int (*f)(char *))
 	len = 0;
 	while (lst)
 	{
-		len += (*f)(lst->content);
+		len += (*f)(lst->content, 0, 1);
 		lst = lst->next;
 	}
 	return (len);
 }
-
+/*
 void	ft_listclear(t_list **lst)
 {
 	t_list	*temp;
@@ -92,4 +109,4 @@ void	ft_listclear(t_list **lst)
 		*lst = (*lst)->next;
 		free(temp);
 	}
-}
+}*/
