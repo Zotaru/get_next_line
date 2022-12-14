@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 22:36:08 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/14 02:00:04 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/14 02:33:11 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char	*get_next_line(int fd)
 	static char	*kanye = NULL;
 	char		*buffer;
 	t_list		*lst;
-	int			length;
+	int			tab_fd_l[2];
 	char		*tab_fin;
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
@@ -134,26 +134,20 @@ char	*get_next_line(int fd)
 		kanye = ret_line_in_static2(kanye, &lst);
 	else
 	{
+		tab_fd_l[0] = -2;
 		if (kanye != NULL && ft_check_sep(kanye, '\n', 0) == -1)
-			kanye = ft_normi(kanye, buffer, &lst, 0);
-		length = read(fd, buffer, BUFFER_SIZE);
-		buffer[length] = '\0';
-		if (length == 0 && lst == NULL)
+			kanye = ft_normi(kanye, buffer, &lst, tab_fd_l);
+		tab_fd_l[1] = read(fd, buffer, BUFFER_SIZE);
+		buffer[tab_fd_l[1]] = '\0';
+		if (tab_fd_l[1] == 0 && lst == NULL)
 			return (free(buffer), NULL);
-		if (length != 0)
-		{
-		//	kanye = ft_normi(kanye, buffer, &lst, fd);
-			while (ft_check_sep(buffer, '\n', 0) == -1 && length != 0)
-			{
-				ft_listadd_back(&lst, ft_listnew(buffer), 0);
-				length = read(fd, buffer, BUFFER_SIZE);
-				buffer[length] = '\0';
-			}
-			if (length != 0)
-				kanye = length_diff_zero(buffer, kanye, length, &lst);
-		}
+		tab_fd_l[0] = fd; 
+		if (tab_fd_l[1] != 0)
+			kanye = ft_normi(kanye, buffer, &lst, tab_fd_l);
 	}
 	tab_fin = ft_fill_from_lst(lst);
 	ft_listadd_back(&lst, NULL, 1);
 	return (free(buffer), tab_fin);
 }
+
+// tab int avec la length et fd

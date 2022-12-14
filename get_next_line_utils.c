@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 23:27:55 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/14 01:54:43 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/14 02:26:49 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,27 +114,25 @@ void	ft_listclear(t_list **lst)
 	}
 }*/
 
-char	*ft_normi(char *kanye, char *buffer, t_list **lst, int fd)
+char	*ft_normi(char *kanye, char *buffer, t_list **lst, int *tab_fd_l)
 {
-	int length;
+	//int length;
 
-	length = 1;
-	if (fd == 0)
+	//length = 1;
+	if (tab_fd_l[0] == -2)
 	{
 		ft_listadd_back(lst, ft_listnew(kanye), 0);
 		free(kanye);
 		kanye = NULL;
+		return (kanye);
 	}
-	else
+	while (ft_check_sep(buffer, '\n', 0) == -1 && tab_fd_l[1] != 0)
 	{
-		while (ft_check_sep(buffer, '\n', 0) == -1 && length != 0)
-		{
-			ft_listadd_back(lst, ft_listnew(buffer), 0);
-			length = read(fd, buffer, BUFFER_SIZE);
-			buffer[length] = '\0';
-		}
-		if (length != 0)
-			kanye = length_diff_zero(buffer, kanye, length, lst);
+		ft_listadd_back(lst, ft_listnew(buffer), 0);
+		tab_fd_l[1] = read(tab_fd_l[0], buffer, BUFFER_SIZE);
+		buffer[tab_fd_l[1]] = '\0';
 	}
+	if (tab_fd_l[1] != 0)
+		kanye = length_diff_zero(buffer, kanye, tab_fd_l[1], lst);
 	return (kanye);
 }

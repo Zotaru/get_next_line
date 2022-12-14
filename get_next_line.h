@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 22:48:26 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/14 01:55:44 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/14 02:27:03 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		ft_listiter(t_list *lst, int (*f)(char *, char, int));
 char	*get_next_line(int fd);
 char	*ft_fill_from_lst(t_list *lst);
 int		ft_check_sep(char *s, char c, int boolean);
-char	*ft_normi(char *kanye, char *buffer, t_list **lst, int boolean);
+char	*ft_normi(char *kanye, char *buffer, t_list **lst, int *tab_fd_l);
 char	*length_diff_zero(char *buf, char *kanye, int length, t_list **lst);
 
 #endif
