@@ -101,7 +101,7 @@ t_list	*get_next_line2(int fd)
 	int			tab_fd_l[3];
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0 || buffer == NULL)
+	if (fd < 0 || BUFFER_SIZE <= 0 || buffer == NULL)
 		return (free(buffer), NULL);
 	lst = NULL;
 	if (kanye != NULL && ft_check_sep(kanye, '\n', 0) >= 0)
@@ -112,9 +112,9 @@ t_list	*get_next_line2(int fd)
 		if (kanye != NULL && ft_check_sep(kanye, '\n', 0) == -1)
 			kanye = ft_normi(kanye, buffer, &lst, tab_fd_l);
 		tab_fd_l[1] = read(fd, buffer, BUFFER_SIZE);
-		buffer[tab_fd_l[1]] = '\0';
-		if (tab_fd_l[1] == 0 && lst == NULL)
+		if ((tab_fd_l[1] == 0 && lst == NULL) || tab_fd_l[1] < 0)
 			return (free(buffer), NULL);
+		buffer[tab_fd_l[1]] = '\0';
 		tab_fd_l[0] = fd;
 		if (tab_fd_l[1] != 0)
 			kanye = ft_normi(kanye, buffer, &lst, tab_fd_l);
