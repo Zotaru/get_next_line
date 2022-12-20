@@ -59,16 +59,18 @@ int	main()
 	tim.tv_sec = 0;
 	tim.tv_nsec = 200000000;
 
-	fd = open("Tripouille/files/41_with_nl", O_RDONLY);
+	fd = open("42v2", O_RDONLY);
 	if ( fd == -1)
 	{
 		printf("open failed");
 		return (0);
 	}
 
-	tab = get_next_line(fd);
-	printf("%s", tab);
-	free(tab);
+	while (tab = get_next_line(fd))
+	{
+		printf("%s", tab);
+		free(tab);
+	}
 	// tab = get_next_line(fd);
 	// printf("%s", tab);
 	// free(tab);
