@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 23:27:55 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/15 00:29:15 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/21 00:39:30 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_list	*ft_listnew(char *content, t_list *lst, int j)
 {
 	t_list	*new;
 	int		i;
-	int		l;
 
 	if (j == 0)
 	{
@@ -26,15 +25,15 @@ t_list	*ft_listnew(char *content, t_list *lst, int j)
 			lst = lst->next;
 		return (lst);
 	}
-	l = ft_check_sep(content, 0, 1);
-	i = 0;
+	i = -1;
 	new = malloc(sizeof(t_list));
-	new->content = malloc((l + 1) * sizeof(char));
-	while (i < l)
-	{
+	if (new == NULL)
+		return (NULL);
+	new->content = malloc((ft_check_sep(content, 0, 1) + 1) * sizeof(char));
+	if (new->content == NULL)
+		return (free(new), NULL);
+	while (++i < ft_check_sep(content, 0, 1))
 		new->content[i] = content[i];
-		i++;
-	}
 	new->content[i] = '\0';
 	new->next = NULL;
 	return (new);
