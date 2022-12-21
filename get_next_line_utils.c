@@ -6,7 +6,7 @@
 /*   By: amonier <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 23:27:55 by amonier           #+#    #+#             */
-/*   Updated: 2022/12/21 00:39:30 by amonier          ###   ########.fr       */
+/*   Updated: 2022/12/21 02:15:20 by amonier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	ft_listadd_back(t_list **lst, t_list *new, int i)
 
 	if (i == 0)
 	{
+		if (new == NULL)
+			return (ft_listadd_back(lst, NULL, 1));
 		if (lst && *lst)
 		{
 			temp = ft_listnew(0, *lst, 0);
@@ -52,18 +54,16 @@ void	ft_listadd_back(t_list **lst, t_list *new, int i)
 		}
 		else
 			*lst = new;
-	}
-	else if (i == 1)
+		return ;
+	}	
+	if (!lst || !*lst)
+		return ;
+	while (*lst)
 	{
-		if (!lst || !*lst)
-			return ;
-		while (*lst)
-		{
-			free((*lst)->content);
-			temp = *lst;
-			*lst = (*lst)->next;
-			free(temp);
-		}
+		free((*lst)->content);
+		temp = *lst;
+		*lst = (*lst)->next;
+		free(temp);
 	}
 }
 
