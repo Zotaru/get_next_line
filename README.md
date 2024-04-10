@@ -15,15 +15,15 @@ and how they are interpreted by a programming language for further analysis.
 int main(void)
 {
   	int		fd;
-	  char	*line;
+	char	*line;
 
-	  line = NULL;
-	  fd = open("file_name", O_RDONLY);
-  	while (get_next_line(fd, &line))
-	  {
-		  printf(line);
-	  }
-	  close(fd);
+	line = NULL;
+	fd = open("file_name", O_RDONLY);
+	while (get_next_line(fd, &line))
+	{
+		printf(line);
+	}
+	close(fd);
 }
 ```
 > The result will print the file in the terminal
